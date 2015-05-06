@@ -4,6 +4,8 @@ using System.Collections;
 
 public class VinylRotate : MonoBehaviour {
 
+	public GameObject DustPrefab;
+
 	public float RotationSpeed;
 
 	private float currentRotationSpeed;
@@ -11,10 +13,26 @@ public class VinylRotate : MonoBehaviour {
 	void Start () {
 	
 	}
-	
-	// Update is called once per frame
+
+	private float timer = 0;
 	void Update () {
 		transform.Rotate(0, currentRotationSpeed * Time.deltaTime, 0);
+
+		timer += Time.deltaTime;
+
+		if (timer > 2) {
+			timer = 0;
+
+			var pos = transform.position;
+			pos.x = -1.81f;
+			pos.y = 2.78f;
+
+			pos.x -= 0.45f * Random.Range(0, 4);
+
+			var dust = Instantiate(DustPrefab, pos, Quaternion.identity) as GameObject;
+			dust.transform.parent = this.transform;
+		}
+
 	}
 
 	public void StartRotating() {
