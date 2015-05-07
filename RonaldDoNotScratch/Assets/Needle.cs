@@ -6,6 +6,9 @@ public class Needle : MonoBehaviour {
 	public int Lane = 0;
 	public bool Playing;
 
+	public AudioClip NeedleDrop;
+	public AudioClip NeedleUp;
+
 	public bool Moving = false;
 	void Start () {
 	
@@ -35,8 +38,10 @@ public class Needle : MonoBehaviour {
 
 	IEnumerator Move(int direction) {
 		Moving = true;
-
+		
+		this.GetComponent<AudioSource>().PlayOneShot(NeedleUp);
 		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().Pause();
+		//
 
 		Lane -= direction;
 
@@ -50,10 +55,13 @@ public class Needle : MonoBehaviour {
 		iTween.RotateBy(this.gameObject, iTween.Hash("y", (8.0f * direction) / 360,
 													"time", 0.8f));
 
+
 		yield return new WaitForSeconds(0.8f);
 
 		iTween.RotateBy(this.gameObject, iTween.Hash("x", -2.0f / 360,
 													"time", 0.2f));
+
+		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().PlayOneShot(NeedleDrop);
 
 		yield return new WaitForSeconds(0.2f);
 
@@ -73,6 +81,7 @@ public class Needle : MonoBehaviour {
 		iTween.RotateBy(this.gameObject, iTween.Hash("x", -2.0f / 360,
 													"time", 0.8f));
 
+		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().PlayOneShot(NeedleDrop);
 		yield return new WaitForSeconds(0.2f);
 
 		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().Play();		
