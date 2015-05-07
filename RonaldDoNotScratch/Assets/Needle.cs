@@ -20,19 +20,30 @@ public class Needle : MonoBehaviour {
 		if (!Playing) return;
 
 		if (!Moving && Input.GetKeyDown(KeyCode.LeftArrow)) {
-			StartCoroutine(Move(-1));
+			if (Lane < 3) {
+				StartCoroutine(Move(-1));
+			}
+			
 		}
 
 		if (!Moving && Input.GetKeyDown(KeyCode.RightArrow)) {
-			StartCoroutine(Move(1));
+			if (Lane > 0) {
+				StartCoroutine(Move(1));
+			}			
 		}
 	}	
 
 	IEnumerator Move(int direction) {
 		Moving = true;
 
+		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().Pause();
+
+		Lane -= direction;
+
 		iTween.RotateBy(this.gameObject, iTween.Hash("x", 2.0f / 360,
 													"time", 0.2f));
+
+		
 
 		yield return new WaitForSeconds(0.2f);
 
@@ -45,6 +56,8 @@ public class Needle : MonoBehaviour {
 													"time", 0.2f));
 
 		yield return new WaitForSeconds(0.2f);
+
+		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().Play();
 
 		Moving = false;
 	}
@@ -62,7 +75,7 @@ public class Needle : MonoBehaviour {
 
 		yield return new WaitForSeconds(0.2f);
 
-		this.GetComponent<AudioSource>().Play();
+		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().Play();		
 
 		Playing = true;
 	}
