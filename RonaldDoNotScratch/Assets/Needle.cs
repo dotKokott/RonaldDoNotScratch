@@ -40,8 +40,7 @@ public class Needle : MonoBehaviour {
 		Moving = true;
 		
 		this.GetComponent<AudioSource>().PlayOneShot(NeedleUp);
-		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().Pause();
-		//
+		GameObject.Find( "Audio" + Lane ).GetComponent<AudioSource>().volume = 0;
 
 		Lane -= direction;
 
@@ -65,7 +64,7 @@ public class Needle : MonoBehaviour {
 
 		yield return new WaitForSeconds(0.2f);
 
-		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().Play();
+		var audio = GameObject.Find( "Audio" + Lane ).GetComponent<AudioSource>().volume = 1;
 
 		Moving = false;
 	}
@@ -81,12 +80,23 @@ public class Needle : MonoBehaviour {
 		iTween.RotateBy(this.gameObject, iTween.Hash("x", -2.0f / 360,
 													"time", 0.8f));
 
-		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().PlayOneShot(NeedleDrop);
+		//GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().PlayOneShot(NeedleDrop);
 		yield return new WaitForSeconds(0.2f);
 
-		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().Play();		
+
+		playAll();
+		GameObject.Find( "Audio" + Lane ).GetComponent<AudioSource>().volume = 1;
 
 		Playing = true;
+	}
+
+	void playAll() {
+		for ( int i = 0; i < 4; i++ ) {
+			GameObject.Find( "Audio" + i ).GetComponent<AudioSource>().Play();
+		}
+
+		GameObject.Find( "BackgroundAudio" ).GetComponent<AudioSource>().volume = 1;
+		GameObject.Find( "BackgroundAudio" ).GetComponent<AudioSource>().Play();
 	}
 }
 
