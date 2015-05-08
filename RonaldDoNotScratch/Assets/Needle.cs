@@ -76,6 +76,8 @@ public class Needle : MonoBehaviour {
         iTween.MoveBy(Camera.main.gameObject, iTween.Hash("z", -4,
                                                             "time", 5));
 
+		iTween.ValueTo( gameObject, iTween.Hash( "from", 20f, "to", 3.75f, "onupdate", "VignetteUpdate", "time", 3.25f ) );
+
 		iTween.RotateBy(this.gameObject, iTween.Hash("y", -18.0f / 360,
 													"time", 3.0f));
 
@@ -93,7 +95,7 @@ public class Needle : MonoBehaviour {
 		playAll();
 		GameObject.Find( "Audio" + Lane ).GetComponent<AudioSource>().volume = 1;
 
-
+		GameObject.Find( "CurrentScore" ).GetComponent<Timer>().StartTimer();
 
 		Playing = true;
         GameObject.Find("Vinyl").GetComponent<VinylRotate>().GenerateDust = true;
@@ -108,6 +110,10 @@ public class Needle : MonoBehaviour {
 
 		GameObject.Find( "BackgroundAudio" ).GetComponent<AudioSource>().volume = 1;
 		GameObject.Find( "BackgroundAudio" ).GetComponent<AudioSource>().Play();
+	}
+
+	private void VignetteUpdate( float value ) {
+		Camera.main.GetComponent<UnityStandardAssets.ImageEffects.VignetteAndChromaticAberration>().intensity = value;
 	}
 }
 
