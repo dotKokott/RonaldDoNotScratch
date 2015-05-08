@@ -5,8 +5,9 @@ using System.Collections;
 public class VinylRotate : MonoBehaviour {
 
 	public GameObject DustPrefab;
-
 	public float RotationSpeed;
+
+    public bool GenerateDust;
 
 	private float currentRotationSpeed;
 	// Use this for initialization
@@ -17,6 +18,8 @@ public class VinylRotate : MonoBehaviour {
 	private float timer = 0;
 	void Update () {
 		transform.Rotate(0, currentRotationSpeed * Time.deltaTime, 0);
+
+        if (!GenerateDust) return;
 
 		timer += Time.deltaTime;
 

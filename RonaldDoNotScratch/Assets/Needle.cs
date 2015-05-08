@@ -7,7 +7,7 @@ public class Needle : MonoBehaviour {
 	public bool Playing;
 
 	public AudioClip NeedleDrop;
-	public AudioClip NeedleUp;
+	public AudioClip NeedleUp;    
 
 	public bool Moving = false;
 	void Start () {
@@ -70,6 +70,12 @@ public class Needle : MonoBehaviour {
 	}
 
 	IEnumerator TurnOn() {
+        iTween.RotateBy(Camera.main.gameObject, iTween.Hash("z", -1,
+                                                            "time", 5));
+
+        iTween.MoveBy(Camera.main.gameObject, iTween.Hash("z", -4,
+                                                            "time", 5));
+
 		iTween.RotateBy(this.gameObject, iTween.Hash("y", -18.0f / 360,
 													"time", 3.0f));
 
@@ -80,17 +86,22 @@ public class Needle : MonoBehaviour {
 		iTween.RotateBy(this.gameObject, iTween.Hash("x", -2.0f / 360,
 													"time", 0.8f));
 
-		//GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().PlayOneShot(NeedleDrop);
+		GameObject.Find("Audio" + Lane).GetComponent<AudioSource>().PlayOneShot(NeedleDrop);
 		yield return new WaitForSeconds(0.2f);
 
 
 		playAll();
 		GameObject.Find( "Audio" + Lane ).GetComponent<AudioSource>().volume = 1;
 
+
+
 		Playing = true;
+        GameObject.Find("Vinyl").GetComponent<VinylRotate>().GenerateDust = true;
 	}
 
 	void playAll() {
+        GameObject.Find("Crackle").GetComponent<AudioSource>().Play();
+
 		for ( int i = 0; i < 4; i++ ) {
 			GameObject.Find( "Audio" + i ).GetComponent<AudioSource>().Play();
 		}
